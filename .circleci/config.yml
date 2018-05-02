@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: debian:stretch
+    steps:
+      - checkout
+      - run:
+          name: install make/gcc
+          command: apt install -y make gcc
+      - run: make CC=gcc
+      - run: bin/jpeg lena.bmp lena.jpg
