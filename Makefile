@@ -25,8 +25,5 @@ test-pgi: bin-dir
 bin-dir:
 	mkdir -p bin
 
-clang:
-	clang -std=c11 -fopenmp=libomp  -lm -march=native -O3 cli.c -o bin/jpeg
-
 clean:
 	$(RM) bin/test bin/jpeg lena.jpg

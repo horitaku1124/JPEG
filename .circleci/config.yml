@@ -15,5 +15,4 @@ jobs:
       - run: bin/jpeg lena.bmp lena.jpg
       - run: make clean
       - run: make CC=clang
-      - run: make clang
       - run: bin/jpeg lena.bmp lena.jpg
