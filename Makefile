@@ -1,23 +1,29 @@
-cli:
-	gcc-6 -std=c99 cli.c -fopenmp -lm -w -march=native -O3 -o jpeg
+CC=gcc-6
+CFLAGS=-std=c99 -fopenmp -lm -w -march=native -O3
 
-cli-slow:
-	gcc-6 -std=c99 cli.c -fopenmp -fopenacc -lm -w -march=native -O3 -D UNOPTIMIZED -o jpeg
+cli: bin-dir
+	$(CC) $(CFLAGS) cli.c -o bin/jpeg
 
-test:
-	gcc-6 -std=c99 test.c -fopenmp -lm -w -march=native -O3 -o test
-	./test 100
-	rm test lena.jpg
+cli-slow: bin-dir
+	$(CC) -std=c99 cli.c -fopenmp -fopenacc -lm -w -march=native -O3 -D UNOPTIMIZED -o bin/jpeg
 
-test-slow:
-	gcc-6 -std=c99 test.c -fopenmp  -fopenacc -D UNOPTIMIZED -lm -w -march=native -O3 -o test
-	./test 1
-	rm test lena.jpg
+test: bin-dir
+	$(CC) -std=c99 test.c -fopenmp -lm -w -march=native -O3 -o bin/test
+	bin/test 100
+	rm bin/test lena.jpg
 
-test-pgi:
-	pgcc -c99 -acc -openmp -D UNOPTIMIZED -Minfo -fast -O3 -o test test.c
-	./test 1
-	rm test lena.jpg
+test-slow: bin-dir
+	$(CC) -std=c99 test.c -fopenmp  -fopenacc -D UNOPTIMIZED -lm -w -march=native -O3 -o bin/test
+	bin/test 1
+	rm bin/test lena.jpg
+
+test-pgi: bin-dir
+	pgcc -c99 -acc -openmp -D UNOPTIMIZED -Minfo -fast -O3 -o bin/test test.c
+	bin/test 1
+	rm bin/test lena.jpg
+
+bin-dir:
+	mkdir -p bin
 
 clean:
-	rm test jpeg lena.jpg
+	$(RM) bin/test bin/jpeg lena.jpg
