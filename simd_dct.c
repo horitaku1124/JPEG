@@ -13,11 +13,11 @@ void run_dct(int width, int height, float *quant, float *input, int32_t *output)
     {
       if (j == 0)
       {
-        acosvals[i][j] = sqrt(1.0 / 8.0) * cos(PI / 8.0 * (i + 0.5d) * j);
+        acosvals[i][j] = sqrt(1.0 / 8.0) * cos(PI / 8.0 * (i + 0.5) * j);
       }
       else
       {
-        acosvals[i][j] = 0.5 * cos(PI / 8.0 * (i + 0.5d) * j);
+        acosvals[i][j] = 0.5 * cos(PI / 8.0 * (i + 0.5) * j);
       }
     }
   }

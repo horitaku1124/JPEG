@@ -9,7 +9,11 @@ jobs:
           name: update apt
           command: apt update -y
       - run:
-          name: install make/gcc
-          command: apt install -y make gcc
+          name: install make/gcc/clang
+          command: apt install -y make gcc clang libomp-dev
       - run: make CC=gcc
+      - run: bin/jpeg lena.bmp lena.jpg
+      - run: make clean
+      - run: make CC=clang
+      - run: make clang
       - run: bin/jpeg lena.bmp lena.jpg
