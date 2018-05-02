@@ -1,5 +1,7 @@
 #include "jpeg.c"
 
+void compareFiles(char *file1, char *file2);
+
 /* Takes a bmp image specified at the command line and
  * encodes it in JPEG format and writes to another file
  * specified at the command line */
@@ -35,7 +37,7 @@ int main(int argc, char *argv[])
     compareFiles(output, "lena_golden.jpg");
 }
 
-int compareFiles(char *file1, char *file2)
+void compareFiles(char *file1, char *file2)
 {
     FILE *pFile1, *pFile2;
     long lSize1, lSize2; // file length

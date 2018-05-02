@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 void run_dct(int width, int height, float *quant, float *input, int32_t *output)
 {
   float acosvals[8][8];
@@ -137,49 +139,49 @@ void run_dct(int width, int height, float *quant, float *input, int32_t *output)
         row0 = _mm256_div_ps(row0, temp);
         row0 = _mm256_round_ps(row0, _MM_FROUND_TO_NEAREST_INT);
         integer = _mm256_cvttps_epi32(row0);
-        _mm256_storeu_si256(output + (bcol + brow * (width / 8)) * 64, integer);
+        _mm256_storeu_si256((__m256i *)(output + (bcol + brow * (width / 8)) * 64), integer);
 
         temp = _mm256_loadu_ps(&quant[8]);
         row1 = _mm256_div_ps(row1, temp);
         row1 = _mm256_round_ps(row1, _MM_FROUND_TO_NEAREST_INT);
         integer = _mm256_cvttps_epi32(row1);
-        _mm256_storeu_si256(output + 8 + (bcol + brow * (width / 8)) * 64, integer);
+        _mm256_storeu_si256((__m256i *)(output + 8 + (bcol + brow * (width / 8)) * 64), integer);
 
         temp = _mm256_loadu_ps(&quant[16]);
         row2 = _mm256_div_ps(row2, temp);
         row2 = _mm256_round_ps(row2, _MM_FROUND_TO_NEAREST_INT);
         integer = _mm256_cvttps_epi32(row2);
-        _mm256_storeu_si256(output + 16 + (bcol + brow * (width / 8)) * 64, integer);
+        _mm256_storeu_si256((__m256i *)(output + 16 + (bcol + brow * (width / 8)) * 64), integer);
 
         temp = _mm256_loadu_ps(&quant[24]);
         row3 = _mm256_div_ps(row3, temp);
         row3 = _mm256_round_ps(row3, _MM_FROUND_TO_NEAREST_INT);
         integer = _mm256_cvttps_epi32(row3);
-        _mm256_storeu_si256(output + 24 + (bcol + brow * (width / 8)) * 64, integer);
+        _mm256_storeu_si256((__m256i *)(output + 24 + (bcol + brow * (width / 8)) * 64), integer);
 
         temp = _mm256_loadu_ps(&quant[32]);
         row4 = _mm256_div_ps(row4, temp);
         row4 = _mm256_round_ps(row4, _MM_FROUND_TO_NEAREST_INT);
         integer = _mm256_cvttps_epi32(row4);
-        _mm256_storeu_si256(output + 32 + (bcol + brow * (width / 8)) * 64, integer);
+        _mm256_storeu_si256((__m256i *)(output + 32 + (bcol + brow * (width / 8)) * 64), integer);
 
         temp = _mm256_loadu_ps(&quant[40]);
         row5 = _mm256_div_ps(row5, temp);
         row5 = _mm256_round_ps(row5, _MM_FROUND_TO_NEAREST_INT);
         integer = _mm256_cvttps_epi32(row5);
-        _mm256_storeu_si256(output + 40 + (bcol + brow * (width / 8)) * 64, integer);
+        _mm256_storeu_si256((__m256i *)(output + 40 + (bcol + brow * (width / 8)) * 64), integer);
 
         temp = _mm256_loadu_ps(&quant[48]);
         row6 = _mm256_div_ps(row6, temp);
         row6 = _mm256_round_ps(row6, _MM_FROUND_TO_NEAREST_INT);
         integer = _mm256_cvttps_epi32(row6);
-        _mm256_storeu_si256(output + 48 + (bcol + brow * (width / 8)) * 64, integer);
+        _mm256_storeu_si256((__m256i *)(output + 48 + (bcol + brow * (width / 8)) * 64), integer);
 
         temp = _mm256_loadu_ps(&quant[56]);
         row7 = _mm256_div_ps(row7, temp);
         row7 = _mm256_round_ps(row7, _MM_FROUND_TO_NEAREST_INT);
         integer = _mm256_cvttps_epi32(row7);
-        _mm256_storeu_si256(output + 56 + (bcol + brow * (width / 8)) * 64, integer);
+        _mm256_storeu_si256((__m256i *)(output + 56 + (bcol + brow * (width / 8)) * 64), integer);
       }
     }
   }

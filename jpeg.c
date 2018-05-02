@@ -110,11 +110,11 @@ JPEGTimings convertFile(char *input, char *output, int num_colors, bool print_ti
     }
   }
 
-  run_dct(*height, *width, lquant, Y, Yout);
+  run_dct(*height, *width, (float *)lquant, Y, Yout);
   if (num_colors > 1)
   {
-    run_dct(*height, *width, cquant, Cb, Cbout);
-    run_dct(*height, *width, cquant, Cr, Crout);
+    run_dct(*height, *width, (float *)cquant, Cb, Cbout);
+    run_dct(*height, *width, (float *)cquant, Cr, Crout);
   }
 
   free(Y);
