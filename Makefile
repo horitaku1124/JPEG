@@ -1,19 +1,19 @@
 CC=gcc-6
-CFLAGS=-std=c99 -fopenmp -lm -march=native -O3
+CFLAGS=-std=c11 -fopenmp -lm -march=native -O3
 
 cli: bin-dir
 	$(CC) $(CFLAGS) cli.c -o bin/jpeg
 
 cli-slow: bin-dir
-	$(CC) -std=c99 cli.c -fopenmp -fopenacc -lm -march=native -O3 -D UNOPTIMIZED -o bin/jpeg
+	$(CC) $(CFLAGS) cli.c -fopenacc -D UNOPTIMIZED -o bin/jpeg
 
 test: bin-dir
-	$(CC) -std=c99 test.c -fopenmp -lm -march=native -O3 -o bin/test
+	$(CC) $(CFLAGS) test.c -o bin/test
 	bin/test 100
 	rm bin/test lena.jpg
 
 test-slow: bin-dir
-	$(CC) -std=c99 test.c -fopenmp  -fopenacc -D UNOPTIMIZED -lm -march=native -O3 -o bin/test
+	$(CC) $(CFLAGS) test.c -fopenacc -D UNOPTIMIZED -o bin/test
 	bin/test 1
 	rm bin/test lena.jpg
 
