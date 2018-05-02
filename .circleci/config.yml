@@ -6,6 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: update apt
+          command: apt update -y
+      - run:
           name: install make/gcc
           command: apt install -y make gcc
       - run: make CC=gcc
