@@ -29,22 +29,22 @@ int readBitmapFileHeader(FILE *fp, BITMAPFILEHEADER *bfh)
   
     rc = readUINT16little(fp, &(bfh->type));
     if (rc != 0)
-	return rc;
+        return rc;
     
     rc = readUINT32little(fp, &(bfh->size));
     if (rc != 0)
-	return rc;
+        return rc;
     
     rc = readINT16little(fp, &(bfh->xHotspot));
     if (rc != 0)
-	return rc;
+        return rc;
     
     rc = readINT16little(fp, &(bfh->yHotspot));
     if (rc != 0)
-	return rc;
+        return rc;
     
     rc = readUINT32little(fp, &(bfh->offsetToBits));
-    return rc;
+        return rc;
 }
 
 /*
@@ -56,18 +56,18 @@ int readBitmapArrayHeader(FILE *fp, BITMAPARRAYHEADER *bah)
     
     rc = readUINT16little(fp, &(bah->type));
     if (rc != 0)
-	return rc;
+        return rc;
     rc = readUINT32little(fp, &(bah->size));
     if (rc != 0)
-	return rc;
+        return rc;
     rc = readUINT32little(fp, &(bah->next));
     if (rc != 0)
-	return rc;
+        return rc;
     rc = readUINT16little(fp, &(bah->screenWidth));
     if (rc != 0)
-	return rc;
+        return rc;
     rc = readUINT16little(fp, &(bah->screenHeight));
-    return rc;
+        return rc;
 }
 
 /*
@@ -81,7 +81,7 @@ int readBitmapArrayHeader(FILE *fp, BITMAPARRAYHEADER *bah)
  */
 int readBitmapHeader(FILE *fp, BITMAPHEADER *bh)
 {
-    int    rc, oldFormat, bytesRead;
+    int rc, oldFormat, bytesRead;
     UINT16 tempVal;
     
     /*
@@ -97,7 +97,7 @@ int readBitmapHeader(FILE *fp, BITMAPHEADER *bh)
      */
     rc = readUINT32little(fp, &(bh->size));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead = 4;
     
     /*
@@ -106,9 +106,9 @@ int readBitmapHeader(FILE *fp, BITMAPHEADER *bh)
      * differently.
      */
     if (bh->size <= 12)
-	oldFormat = 1;
+        oldFormat = 1;
     else
-	oldFormat = 0;
+        oldFormat = 0;
     
     /*
      * Width and height are read differently for old and new format files.  In
@@ -119,20 +119,20 @@ int readBitmapHeader(FILE *fp, BITMAPHEADER *bh)
     {
         INT16 i16 = (INT16)tempVal;
         rc = (int) readINT16little(fp, &i16);
-	    if (rc != 0)
-	        return rc;
+        if (rc != 0)
+            return rc;
         bh->width = (UINT16)i16;
         bytesRead += 2;
     }
     else
     {
-	rc = readINT32little(fp, &(bh->width));
-	if (rc != 0)
-	    return rc;
-	bytesRead += 4;
+        rc = readINT32little(fp, &(bh->width));
+        if (rc != 0)
+            return rc;
+        bytesRead += 4;
     }
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     if (oldFormat)
     {
@@ -145,13 +145,13 @@ int readBitmapHeader(FILE *fp, BITMAPHEADER *bh)
     }
     else
     {
-	rc = readINT32little(fp, &(bh->height));
-	if (rc != 0)
-	    return rc;
-	bytesRead += 4;
+        rc = readINT32little(fp, &(bh->height));
+        if (rc != 0)
+            return rc;
+        bytesRead += 4;
     }
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     /*
      * From this point on, old and new formats are identical to each other,
@@ -162,17 +162,17 @@ int readBitmapHeader(FILE *fp, BITMAPHEADER *bh)
      */
     rc = readUINT16little(fp, &(bh->numBitPlanes));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 2;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT16little(fp, &(bh->numBitsPerPlane));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 2;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
   
     /*
      * Old format stop here.  But we don't have to check, because in that
@@ -181,101 +181,101 @@ int readBitmapHeader(FILE *fp, BITMAPHEADER *bh)
      */
     rc = readUINT32little(fp, &(bh->compressionScheme));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT32little(fp, &(bh->sizeOfImageData));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT32little(fp, &(bh->xResolution));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT32little(fp, &(bh->yResolution));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT32little(fp, &(bh->numColorsUsed));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT32little(fp, &(bh->numImportantColors));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT16little(fp, &(bh->resolutionUnits));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 2;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT16little(fp, &(bh->padding));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 2;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT16little(fp, &(bh->origin));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 2;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT16little(fp, &(bh->halftoning));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 2;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT32little(fp, &(bh->halftoningParam1));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT32little(fp, &(bh->halftoningParam2));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
   
     rc = readUINT32little(fp, &(bh->colorEncoding));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     rc = readUINT32little(fp, &(bh->identifier));
     if (rc != 0)
-	return rc;
+        return rc;
     bytesRead += 4;
     if (bytesRead >= bh->size)
-	return 0;
+        return 0;
     
     /*
      * If there are more bytes in the file than this, then the file is using a
@@ -302,25 +302,25 @@ int readRgb(FILE *fp, RGB *rgb, int numBytes)
     int rc;
     
     if (numBytes == 0)
-	return 0;
+        return 0;
     rc = readUINT8little(fp, &(rgb->blue));
     if (rc != 0)
-	return rc;
+        return rc;
     
     if (numBytes == 1)
-	return 0;
+        return 0;
     rc = readUINT8little(fp, &(rgb->green));
     if (rc != 0)
-	return rc;
+        return rc;
     
     if (numBytes == 2)
-	return 0;
+        return 0;
     rc = readUINT8little(fp, &(rgb->red));
     if (rc != 0)
-	return rc;
+        return rc;
     
     if (numBytes == 3)
-	return 0;
+        return 0;
     
     /* Skip over extra bytes if more than three were requested */
     return fseek(fp, (numBytes - 3), SEEK_CUR);
@@ -336,9 +336,9 @@ int readColorTable(FILE *fp, RGB *rgb, int numEntries, int numBytesPerEntry)
     
     for (i=0; i<numEntries; i++)
     {
-	rc = readRgb(fp, &(rgb[i]), numBytesPerEntry);
-	if (rc != 0)
-	    return rc;
+        rc = readRgb(fp, &(rgb[i]), numBytesPerEntry);
+        if (rc != 0)
+            return rc;
     }
     return 0;
 }
@@ -355,7 +355,7 @@ int readColorTable(FILE *fp, RGB *rgb, int numEntries, int numBytesPerEntry)
  * Each row of pixels is always padded to a 4-byte boundary.
  */
 int readBitsUncompressed(FILE *fp, RGB *image, int width, int height,
-			 int depth, RGB *colorTable)
+             int depth, RGB *colorTable)
 {
     UINT8 temp;
     INT8 temp2 = (INT8)temp;
@@ -364,202 +364,202 @@ int readBitsUncompressed(FILE *fp, RGB *image, int width, int height,
     
     switch (depth) {
     case 1:
-	/*
-	 * For 1 bit per pixel, each byte is 8 pixels.  Each one is an index
-	 * into the color table (1 or 0).  Most significant byte first.  All
-	 * is padded to 32-bit boundaries as well.
-	 */
-	pixel = 0;
-	if (((width % 32) == 0) || ((width % 32) > 24))
-	    padBytes = 0;
-	else if ((width % 32) <= 8)
-	    padBytes = 3;
-	else if ((width % 32) <= 16)
-	    padBytes = 2;
-	else
-	    padBytes = 1;
+    /*
+     * For 1 bit per pixel, each byte is 8 pixels.  Each one is an index
+     * into the color table (1 or 0).  Most significant byte first.  All
+     * is padded to 32-bit boundaries as well.
+     */
+    pixel = 0;
+    if (((width % 32) == 0) || ((width % 32) > 24))
+        padBytes = 0;
+    else if ((width % 32) <= 8)
+        padBytes = 3;
+    else if ((width % 32) <= 16)
+        padBytes = 2;
+    else
+        padBytes = 1;
 
-	for (row = height; row > 0; row--)
-	{
-	    for (column = width; column > 0; column -= 8)
-	    {
-		rc = (int) readINT8little(fp, &temp2);
-		if (rc != 0)
-		    return rc;
-        temp = (INT8)temp2;
-		for (i=0; i < ((column < 8) ? column : 8); i++)
-		{
-		    /*
-		     * For each byte read, bit-decompose it.  Note that the
-		     * last byte on a row could have less than 8 bits used.
-		     * Most significant bits come first.
-		     */
-		    value = ((temp & (1 << (7-i))) == 0) ? 0 : 1;
-		    image[pixel].red   = colorTable[value].red;
-		    image[pixel].green = colorTable[value].green;
-		    image[pixel].blue  = colorTable[value].blue;
-		    pixel++;
-		}
-	    }
-	    if (padBytes != 0)
-	    {
-		rc = fseek(fp, padBytes, SEEK_CUR);
-		if (rc != 0)
-		    return rc;
-	    }
-	}
-	break;
+    for (row = height; row > 0; row--)
+    {
+        for (column = width; column > 0; column -= 8)
+        {
+            rc = (int) readINT8little(fp, &temp2);
+            if (rc != 0)
+                return rc;
+            temp = (INT8)temp2;
+            for (i=0; i < ((column < 8) ? column : 8); i++)
+            {
+                /*
+                * For each byte read, bit-decompose it.  Note that the
+                * last byte on a row could have less than 8 bits used.
+                * Most significant bits come first.
+                */
+                value = ((temp & (1 << (7-i))) == 0) ? 0 : 1;
+                image[pixel].red   = colorTable[value].red;
+                image[pixel].green = colorTable[value].green;
+                image[pixel].blue  = colorTable[value].blue;
+                pixel++;
+            }
+        }
+        if (padBytes != 0)
+        {
+            rc = fseek(fp, padBytes, SEEK_CUR);
+            if (rc != 0)
+                return rc;
+        }
+    }
+    break;
 
     case 4:
-	/*
-	 * For 4 bits per pixel, each byte is two pixels.  The upper half go to
-	 * the first pixel, and the lower half to the second.
-	 */
-	pixel = 0;
-	if (((width % 8) == 0) || ((width % 8) > 6))
-	    padBytes = 0;
-	else if ((width % 8) <= 2)
-	    padBytes = 3;
-	else if ((width % 8) <= 4)
-	    padBytes = 2;
-	else
-	    padBytes = 1;
-	
-	for (row = height; row > 0; row--)
-	{
-	    for (column = width; column > 0; column -= 2)
-	    {
-		/*
-		 * Each byte here is two pixels.  Note that the last byte on a
-		 * row may only contain one pixel.
-		 */
-		rc = readUINT8little(fp, &temp);
-		if (rc != 0)
-		    return rc;
-		/*
-		 * First pixel is the upper 4 bits
-		 */
-		value = temp >> 4;
-		image[pixel].red   = colorTable[value].red;
-		image[pixel].green = colorTable[value].green;
-		image[pixel].blue  = colorTable[value].blue;
-		pixel++;
+    /*
+     * For 4 bits per pixel, each byte is two pixels.  The upper half go to
+     * the first pixel, and the lower half to the second.
+     */
+    pixel = 0;
+    if (((width % 8) == 0) || ((width % 8) > 6))
+        padBytes = 0;
+    else if ((width % 8) <= 2)
+        padBytes = 3;
+    else if ((width % 8) <= 4)
+        padBytes = 2;
+    else
+        padBytes = 1;
+    
+    for (row = height; row > 0; row--)
+    {
+        for (column = width; column > 0; column -= 2)
+        {
+            /*
+            * Each byte here is two pixels.  Note that the last byte on a
+            * row may only contain one pixel.
+            */
+            rc = readUINT8little(fp, &temp);
+            if (rc != 0)
+                return rc;
+            /*
+            * First pixel is the upper 4 bits
+            */
+            value = temp >> 4;
+            image[pixel].red   = colorTable[value].red;
+            image[pixel].green = colorTable[value].green;
+            image[pixel].blue  = colorTable[value].blue;
+            pixel++;
 
-		/*
-		 * Second pixel is lower 4 bits.  If this is the last byte in
-		 * the row, and there are an odd number of pixels per row, then
-		 * this is not valid data.
-		 */
-		if (column == 1)
-		{
-		    value = temp & 0x0f;
-		    image[pixel].red   = colorTable[value].red;
-		    image[pixel].green = colorTable[value].green;
-		    image[pixel].blue  = colorTable[value].blue;
-		    pixel++;
-		}
-	    }
-	    if (padBytes != 0)
-	    {
-		rc = fseek(fp, padBytes, SEEK_CUR);
-		if (rc != 0)
-		    return rc;
-	    }
-	}
-	break;
+            /*
+            * Second pixel is lower 4 bits.  If this is the last byte in
+            * the row, and there are an odd number of pixels per row, then
+            * this is not valid data.
+            */
+            if (column == 1)
+            {
+                value = temp & 0x0f;
+                image[pixel].red   = colorTable[value].red;
+                image[pixel].green = colorTable[value].green;
+                image[pixel].blue  = colorTable[value].blue;
+                pixel++;
+            }
+        }
+        if (padBytes != 0)
+        {
+            rc = fseek(fp, padBytes, SEEK_CUR);
+            if (rc != 0)
+                return rc;
+        }
+    }
+    break;
 
     case 8:
-	/*
-	 * For 8 bits per pixel, each byte is one pixel.
-	 */
-	pixel = 0;
-	padBytes = ((width % 4) == 0) ? 0 : (4 - (width % 4));
+    /*
+     * For 8 bits per pixel, each byte is one pixel.
+     */
+    pixel = 0;
+    padBytes = ((width % 4) == 0) ? 0 : (4 - (width % 4));
 
-	for (row=height; row > 0; row--)
-	{
-	    for (column=width; column > 0; column--)
-	    {
-		rc = readUINT8little(fp, &temp);
-		if (rc != 0)
-		    return rc;
-		image[pixel].red   = colorTable[temp].red;
-		image[pixel].green = colorTable[temp].green;
-		image[pixel].blue  = colorTable[temp].blue;
-		pixel++;
-	    }
-	    if (padBytes != 0)
-	    {
-		rc = fseek(fp, padBytes, SEEK_CUR);
-		if (rc != 0)
-		    return rc;
-	    }
-	}
-	break;
+    for (row=height; row > 0; row--)
+    {
+        for (column=width; column > 0; column--)
+        {
+            rc = readUINT8little(fp, &temp);
+            if (rc != 0)
+                return rc;
+            image[pixel].red   = colorTable[temp].red;
+            image[pixel].green = colorTable[temp].green;
+            image[pixel].blue  = colorTable[temp].blue;
+            pixel++;
+        }
+        if (padBytes != 0)
+        {
+            rc = fseek(fp, padBytes, SEEK_CUR);
+            if (rc != 0)
+                return rc;
+        }
+    }
+    break;
 
     case 16:
-	/*
-	 * For 16 bits per pixel, you must read two bytes per pixel.  But
-	 * there's a catch. The data is big endian!  This is because all pixel
-	 * data (for all formats, actually) is stored as a packed array,
-	 * stored in pixel order.
-	 */
-	pixel = 0;
-	padBytes = ((width % 2) == 0) ? 0 : 2;
-	for (row=height; row > 0; row--)
-	{
-	    for (column=width; column > 0; column--)
-	    {
-		/*
-		 * Read a 16-bit integer as big endian.  Do this by reading
-		 * two bytes and mathematically combine them.  After that,
-		 * proceed as usual.
-		 */
-		rc = readUINT8little(fp, &temp);
-		if (rc != 0)
-		    return rc;
-		value = ((long)temp) << 8;
-		rc = readUINT8little(fp, &temp);
-		if (rc != 0)
-		    return rc;
-		value |= temp;
+    /*
+     * For 16 bits per pixel, you must read two bytes per pixel.  But
+     * there's a catch. The data is big endian!  This is because all pixel
+     * data (for all formats, actually) is stored as a packed array,
+     * stored in pixel order.
+     */
+    pixel = 0;
+    padBytes = ((width % 2) == 0) ? 0 : 2;
+    for (row=height; row > 0; row--)
+    {
+        for (column=width; column > 0; column--)
+        {
+            /*
+            * Read a 16-bit integer as big endian.  Do this by reading
+            * two bytes and mathematically combine them.  After that,
+            * proceed as usual.
+            */
+            rc = readUINT8little(fp, &temp);
+            if (rc != 0)
+                return rc;
+            value = ((long)temp) << 8;
+            rc = readUINT8little(fp, &temp);
+            if (rc != 0)
+                return rc;
+            value |= temp;
 
-		image[pixel].red   = colorTable[value].red;
-		image[pixel].green = colorTable[value].green;
-		image[pixel].blue  = colorTable[value].blue;
-		pixel++;
-	    }
-	    if (padBytes != 0)
-	    {
-		rc = fseek(fp, padBytes, SEEK_CUR);
-		if (rc != 0)
-		    return rc;
-	    }
-	}
-	break;
+            image[pixel].red   = colorTable[value].red;
+            image[pixel].green = colorTable[value].green;
+            image[pixel].blue  = colorTable[value].blue;
+            pixel++;
+        }
+        if (padBytes != 0)
+        {
+            rc = fseek(fp, padBytes, SEEK_CUR);
+            if (rc != 0)
+                return rc;
+        }
+    }
+    break;
 
     case 24:
-	/*
-	 * For 24 bits per pixel, it's an RGB structure.  Note that the color
-	 * table is ignore for bit depths greater than 24 bits.
-	 */
-	pixel = 0;
-	padBytes = width % 4;
+    /*
+     * For 24 bits per pixel, it's an RGB structure.  Note that the color
+     * table is ignore for bit depths greater than 24 bits.
+     */
+    pixel = 0;
+    padBytes = width % 4;
 
-	for (row=height; row > 0; row--)
-	{
-	    for (column=width; column > 0; column--)
-	    {
-		rc = readRgb(fp, image+pixel, 3);
-		pixel++;
-	    }
-	    if (padBytes != 0)
-	    {
-		rc = fseek(fp, padBytes, SEEK_CUR);
-		if (rc != 0)
-		    return rc;
-	    }
-	}          
-	break;
+    for (row=height; row > 0; row--)
+    {
+        for (column=width; column > 0; column--)
+        {
+            rc = readRgb(fp, image+pixel, 3);
+            pixel++;
+        }
+        if (padBytes != 0)
+        {
+            rc = fseek(fp, padBytes, SEEK_CUR);
+            if (rc != 0)
+                return rc;
+        }
+    }          
+    break;
     }
     
     return 0;
@@ -586,35 +586,35 @@ int readMaskBitsUncompressed(FILE *fp, char *image, int width, int height)
      */
     pixel = 0;
     if (((width % 32) == 0) || ((width % 32) > 24))
-	padBytes = 0;
+        padBytes = 0;
     else if ((width % 32) <= 8)
-	padBytes = 3;
+        padBytes = 3;
     else if ((width % 32) <= 16)
-	padBytes = 2;
+        padBytes = 2;
     else
-	padBytes = 1;
+        padBytes = 1;
 
     for (row = height; row > 0; row--)
     {
-	for (column = width; column > 0; column -= 8)
-	{
-	    rc = (int) readINT8little(fp, &temp2);
-	    if (rc != 0)
-		    return rc;
-        temp = (UINT8)temp2;
-	    for (i=0; i < ((column < 8) ? column : 8); i++)
-	    {
-            value = ((temp & (1 << (7-i))) == 0) ? 0 : 1;
-            image[pixel] = value;
-            pixel++;
-	    }
-	}
-	if (padBytes != 0)
-	{
-	    rc = fseek(fp, padBytes, SEEK_CUR);
-	    if (rc != 0)
-		return rc;
-	}
+        for (column = width; column > 0; column -= 8)
+        {
+            rc = (int) readINT8little(fp, &temp2);
+            if (rc != 0)
+                return rc;
+            temp = (UINT8)temp2;
+            for (i=0; i < ((column < 8) ? column : 8); i++)
+            {
+                value = ((temp & (1 << (7-i))) == 0) ? 0 : 1;
+                image[pixel] = value;
+                pixel++;
+            }
+        }
+        if (padBytes != 0)
+        {
+            rc = fseek(fp, padBytes, SEEK_CUR);
+            if (rc != 0)
+                return rc;
+        }
     }
 
     return 0;
@@ -633,15 +633,15 @@ void reflectYRGB(RGB *image, int width, int height)
     
     for (row = 0; row < (height / 2); row++)
     {
-	for (col = 0; col < width; col++)
-	{
-	    /* Swap pixels at (x,y) with (x,height-y) */
-	    memcpy(&temp, image+(row * width + col), sizeof(RGB));
-	    memcpy(image+(row * width + col),
-		   image+((height - row - 1) * width + col), sizeof(RGB));
-	    memcpy(image+((height - row - 1) * width + col), &temp,
-		   sizeof(RGB));
-	}
+        for (col = 0; col < width; col++)
+        {
+            /* Swap pixels at (x,y) with (x,height-y) */
+            memcpy(&temp, image+(row * width + col), sizeof(RGB));
+            memcpy(image+(row * width + col),
+            image+((height - row - 1) * width + col), sizeof(RGB));
+            memcpy(image+((height - row - 1) * width + col), &temp,
+            sizeof(RGB));
+        }
     }
 }
 /*
@@ -656,13 +656,13 @@ void reflectYchar(char *image, int width, int height)
     
     for (row = 0; row < (height / 2); row++)
     {
-	for (col = 0; col < width; col++)
-	{
-	    /* Swap values at (x,y) with (x,height-y) */
-	    temp = image[row * width + col];
-	    image[row * width + col]=image[(height - row - 1) * width + col];
-	    image[(height - row - 1) * width + col] = temp;
-	}
+        for (col = 0; col < width; col++)
+        {
+            /* Swap values at (x,y) with (x,height-y) */
+            temp = image[row * width + col];
+            image[row * width + col]=image[(height - row - 1) * width + col];
+            image[(height - row - 1) * width + col] = temp;
+        }
     }
 }
 
@@ -686,14 +686,14 @@ void reflectYchar(char *image, int width, int height)
  * and a monochrome icon.
  *
  * return values:
- *	   0 - success
- *	1000 - incorrect file type for the routine called
- *	1001 - image data out of range or damaged file
- *	1002 - good data, but the routine called can't handle it (yet)
- *	1003 - out of memory allocating color table
- *	1004 - out of memory allocating image
- *	1005 - out of memory allocating image arrays
- *	1006 - Illegal image type in a multi-image array
+ *       0 - success
+ *    1000 - incorrect file type for the routine called
+ *    1001 - image data out of range or damaged file
+ *    1002 - good data, but the routine called can't handle it (yet)
+ *    1003 - out of memory allocating color table
+ *    1004 - out of memory allocating image
+ *    1005 - out of memory allocating image arrays
+ *    1006 - Illegal image type in a multi-image array
  *
  *     other - I/O error of some kind
  */
@@ -718,11 +718,11 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
      */
     rc = readBitmapFileHeader(fp, &bfh);
     if (rc != 0)
-	return rc;
+        return rc;
     if ((bfh.type != TYPE_BMP) &&
-	(bfh.type != TYPE_ICO_COLOR) &&
-	(bfh.type != TYPE_PTR_COLOR))
-	return 1000;
+    (bfh.type != TYPE_ICO_COLOR) &&
+    (bfh.type != TYPE_PTR_COLOR))
+        return 1000;
 
     /*
      * Immediately following a file header is always the bitmap header.  Read
@@ -733,15 +733,15 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
      */
     rc = readBitmapHeader(fp, &bh);
     if (rc != 0)
-	return rc;
+        return rc;
     depth = bh.numBitPlanes * bh.numBitsPerPlane;
     if ((depth > 32) ||
-	(bh.compressionScheme > COMPRESSION_LAST) ||
-	(bh.origin > ORIGIN_LAST) ||
-	(bh.colorEncoding > COLOR_ENCODING_LAST) ||
-	(bh.width < 1) ||
-	(bh.height == 0))
-	return 1001;
+    (bh.compressionScheme > COMPRESSION_LAST) ||
+    (bh.origin > ORIGIN_LAST) ||
+    (bh.colorEncoding > COLOR_ENCODING_LAST) ||
+    (bh.width < 1) ||
+    (bh.height == 0))
+        return 1001;
 
     /*
      * If the height is negative, then this is a Windows bitmap whose origin
@@ -751,11 +751,11 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
      */
     if (bh.height < 0)
     {
-	inverted = 0;
-	bh.height = -bh.height;
+        inverted = 0;
+        bh.height = -bh.height;
     }
     else
-	inverted = 1;
+        inverted = 1;
     
     /*
      * Now, sanity check a few fields that are valid, but I don't have code to
@@ -763,13 +763,13 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
      * compression scheme, and bit depths that are not 1, 4, 8, 16, or 24.
      */
     if ((bh.numBitPlanes > 1) ||
-	((bh.numBitsPerPlane != 1) &&
-	 (bh.numBitsPerPlane != 4) &&
-	 (bh.numBitsPerPlane != 8) &&
-	 (bh.numBitsPerPlane != 16) &&
-	 (bh.numBitsPerPlane != 24)) ||
-	(bh.compressionScheme != COMPRESSION_NONE))
-	return 1002;
+    ((bh.numBitsPerPlane != 1) &&
+     (bh.numBitsPerPlane != 4) &&
+     (bh.numBitsPerPlane != 8) &&
+     (bh.numBitsPerPlane != 16) &&
+     (bh.numBitsPerPlane != 24)) ||
+    (bh.compressionScheme != COMPRESSION_NONE))
+        return 1002;
     
     /*
      * Allocate and read the color table.  The file pointer has been
@@ -780,19 +780,19 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
      */
     if (depth < 24)
     {
-	numColors = 1 << depth;
-	colorTable = (RGB *)calloc(numColors, sizeof(RGB));
-	if (colorTable == NULL)
-	    return 1003;
-	if (bh.size <= 12)
-	    rc = readColorTable(fp, colorTable, numColors, 3);
-	else
-	    rc = readColorTable(fp, colorTable, numColors, 4);
-	if (rc != 0)
-	{
-	    free(colorTable);
-	    return rc;
-	}
+        numColors = 1 << depth;
+        colorTable = (RGB *)calloc(numColors, sizeof(RGB));
+        if (colorTable == NULL)
+            return 1003;
+        if (bh.size <= 12)
+            rc = readColorTable(fp, colorTable, numColors, 3);
+        else
+            rc = readColorTable(fp, colorTable, numColors, 4);
+        if (rc != 0)
+        {
+            free(colorTable);
+            return rc;
+        }
     }
     
     /*
@@ -809,8 +809,8 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
     image = (RGB *)calloc(numPixels, sizeof(RGB));
     if (image == NULL)
     {
-	free (colorTable);
-	return 1004;
+        free (colorTable);
+        return 1004;
     }
     
     /*
@@ -819,9 +819,9 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
     rc = fseek(fp, bfh.offsetToBits, SEEK_SET);
     if (rc != 0)
     {
-	free (colorTable);
-	free (image);
-	return rc;
+        free (colorTable);
+        free (image);
+        return rc;
     }
     
     /*
@@ -829,23 +829,23 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
      * insert the call here.
      */
     switch (bh.compressionScheme) {
-    case COMPRESSION_NONE:
-	rc = readBitsUncompressed(fp, image, bh.width, bh.height, depth,
-				  colorTable);
-	break;
+        case COMPRESSION_NONE:
+        rc = readBitsUncompressed(fp, image, bh.width, bh.height, depth,
+                    colorTable);
+        break;
     }
     
     if (rc != 0)
     {
-	free(image);
-	return rc;
+        free(image);
+        return rc;
     }
 
     /*
      * If the origin is lower-left, flip the image upside down
      */
     if (inverted)
-	reflectYRGB(image, bh.width, bh.height);
+        reflectYRGB(image, bh.width, bh.height);
 
     /*
      * Return the output values.  Set the file pointer to the byte after the
@@ -862,9 +862,9 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
      * a table would be redundant.
      */
     /*if (colorTable != NULL)
-	free(colorTable);
+    free(colorTable);
 
-	printf("Freed the color table\n");*/
+    printf("Freed the color table\n");*/
     
     return 0;
 }
@@ -875,7 +875,7 @@ int readSingleImageBMP(FILE *fp, RGB **argb, UINT32 *width, UINT32 *height)
  * (interpreted as booleans) for the XOR and AND masks.
  */
 int readSingleImageICOPTR(FILE *fp, char **xorMask, char **andMask,
-		          UINT32 *width, UINT32 *height) 
+                  UINT32 *width, UINT32 *height) 
 {
     BITMAPFILEHEADER  bfh;
     BITMAPHEADER      bh;
@@ -890,12 +890,12 @@ int readSingleImageICOPTR(FILE *fp, char **xorMask, char **andMask,
      */
     rc = readBitmapFileHeader(fp, &bfh);
     if (rc != 0)
-	return rc;
+        return rc;
     if ((bfh.type != TYPE_ICO) &&
-	(bfh.type != TYPE_PTR) &&
-	(bfh.type != TYPE_ICO_COLOR) &&
-	(bfh.type != TYPE_PTR_COLOR))
-	return 1000;
+    (bfh.type != TYPE_PTR) &&
+    (bfh.type != TYPE_ICO_COLOR) &&
+    (bfh.type != TYPE_PTR_COLOR))
+        return 1000;
 
     /*
      * Now read the bitmap data and sanity check it.  Since this is a
@@ -906,21 +906,21 @@ int readSingleImageICOPTR(FILE *fp, char **xorMask, char **andMask,
      */
     rc = readBitmapHeader(fp, &bh);
     if (rc != 0)
-	return rc;
+        return rc;
     if ((bh.numBitPlanes != 1) ||
-	(bh.numBitsPerPlane != 1) ||
-	(bh.compressionScheme > COMPRESSION_LAST) ||
-	(bh.origin > ORIGIN_LAST) ||
-	(bh.colorEncoding > COLOR_ENCODING_LAST) ||
-	(bh.width < 1) ||
-	(bh.height < 1))
-	return 1001;
+    (bh.numBitsPerPlane != 1) ||
+    (bh.compressionScheme > COMPRESSION_LAST) ||
+    (bh.origin > ORIGIN_LAST) ||
+    (bh.colorEncoding > COLOR_ENCODING_LAST) ||
+    (bh.width < 1) ||
+    (bh.height < 1))
+        return 1001;
 
     /*
      * Sanity check some valid fields that I can't deal with yet.
      */
     if (bh.compressionScheme != COMPRESSION_NONE)
-	return 1002;
+        return 1002;
 
     /*
      * Skip over the color table, since this is a monochrome mask.  Note that
@@ -928,12 +928,12 @@ int readSingleImageICOPTR(FILE *fp, char **xorMask, char **andMask,
      * this isn't, and we don't.
      */
     if (bh.size <= 12)
-	rc = fseek(fp, 6, SEEK_CUR);
+        rc = fseek(fp, 6, SEEK_CUR);
     else
-	rc = fseek(fp, 8, SEEK_CUR);
+        rc = fseek(fp, 8, SEEK_CUR);
     if (rc != 0)
     {
-	return rc;
+        return rc;
     }
 
     /*
@@ -949,12 +949,12 @@ int readSingleImageICOPTR(FILE *fp, char **xorMask, char **andMask,
     numPixels = bh.width * bh.height / 2;
     mask1 = (char *)malloc(numPixels);
     if (mask1 == NULL)
-	return 1004;
+        return 1004;
     mask2 = (char *)malloc(numPixels);
     if (mask2 == NULL)
     {
-	free(mask1);
-	return 1004;
+        free(mask1);
+        return 1004;
     }
 
     /*
@@ -963,9 +963,9 @@ int readSingleImageICOPTR(FILE *fp, char **xorMask, char **andMask,
     rc = fseek(fp, bfh.offsetToBits, SEEK_SET);
     if (rc != 0)
     {
-	free (mask1);
-	free (mask2);
-	return rc;
+        free (mask1);
+        free (mask2);
+        return rc;
     }
 
     /*
@@ -974,18 +974,18 @@ int readSingleImageICOPTR(FILE *fp, char **xorMask, char **andMask,
      * height mentioned in the header.
      */
     switch (bh.compressionScheme) {
-    case COMPRESSION_NONE:
-	rc = readMaskBitsUncompressed(fp, mask1, bh.width, bh.height/2);
-	if (rc == 0)
-	    rc = readMaskBitsUncompressed(fp, mask2, bh.width, bh.height/2);
-	break;
+        case COMPRESSION_NONE:
+        rc = readMaskBitsUncompressed(fp, mask1, bh.width, bh.height/2);
+        if (rc == 0)
+            rc = readMaskBitsUncompressed(fp, mask2, bh.width, bh.height/2);
+        break;
     }
 
     if (rc != 0)
     {
-	free (mask1);
-	free (mask2);
-	return rc;
+        free (mask1);
+        free (mask2);
+        return rc;
     }
 
     /*
@@ -1014,7 +1014,7 @@ int readSingleImageICOPTR(FILE *fp, char **xorMask, char **andMask,
  * masks.
  */
 int readSingleImageColorICOPTR(FILE *fp, RGB **argb, char **xorMask,
-			       char **andMask, UINT32 *width, UINT32 *height)
+                   char **andMask, UINT32 *width, UINT32 *height)
 {
     UINT32 width1, height1, width2, height2;
     int rc;
@@ -1030,7 +1030,7 @@ int readSingleImageColorICOPTR(FILE *fp, RGB **argb, char **xorMask,
     rc = readSingleImageICOPTR(fp, xorMask, andMask, &width2, &height2);
     if (rc != 0)
     {
-	return rc;
+        return rc;
     }
 
     /*
@@ -1039,7 +1039,7 @@ int readSingleImageColorICOPTR(FILE *fp, RGB **argb, char **xorMask,
     rc = readSingleImageBMP(fp, argb, &width1, &height1);
     if (rc != 0)
     {
-	return rc;
+        return rc;
     }
 
     /*
@@ -1047,7 +1047,7 @@ int readSingleImageColorICOPTR(FILE *fp, RGB **argb, char **xorMask,
      * match the dimensions of the masks.
      */
     if ((width1 != width2) || (height1 != height2))
-	return 1001;
+        return 1001;
 
     *width = width1;
     *height = height1;
@@ -1068,8 +1068,8 @@ int readSingleImageColorICOPTR(FILE *fp, RGB **argb, char **xorMask,
  * arrays. 
  */
 int readMultipleImage(FILE *fp, RGB ***argbs, char ***xorMasks,
-		      char ***andMasks, UINT32 **widths, UINT32 **heights,
-		      int *imageCount)
+              char ***andMasks, UINT32 **widths, UINT32 **heights,
+              int *imageCount)
 {
     int rc;
     long filePos;
@@ -1085,13 +1085,13 @@ int readMultipleImage(FILE *fp, RGB ***argbs, char ***xorMasks,
     count = 0;
     do
     {
-	rc = readBitmapArrayHeader(fp, &bah);
-	if (rc != 0)
-	    return rc;
-	if (bah.type != TYPE_ARRAY)
-	    return 1000;
-	fseek(fp, bah.next, SEEK_SET);
-	count++;
+        rc = readBitmapArrayHeader(fp, &bah);
+        if (rc != 0)
+            return rc;
+        if (bah.type != TYPE_ARRAY)
+            return 1000;
+        fseek(fp, bah.next, SEEK_SET);
+        count++;
     } while (bah.next != 0);
     fseek(fp, filePos, SEEK_SET);
     
@@ -1100,36 +1100,36 @@ int readMultipleImage(FILE *fp, RGB ***argbs, char ***xorMasks,
      */
     *argbs = (RGB **)calloc(count, sizeof(RGB *));
     if (*argbs == NULL)
-	return 1005;
+        return 1005;
     *xorMasks = (char **)calloc(count, sizeof(char *));
     if (*xorMasks == NULL)
     {
-	free(*argbs);
-	return 1005;
+        free(*argbs);
+        return 1005;
     }
     *andMasks = (char **)calloc(count, sizeof(char *));
     if (*andMasks == NULL)
     {
-	free(*argbs);
-	free(*xorMasks);
-	return 1005;
+        free(*argbs);
+        free(*xorMasks);
+        return 1005;
     }
     *widths = (UINT32 *)calloc(count, sizeof(UINT32));
     if (*widths == NULL)
     {
-	free(*argbs);
-	free(*xorMasks);
-	free(*andMasks);
-	return 1005;
+        free(*argbs);
+        free(*xorMasks);
+        free(*andMasks);
+        return 1005;
     }
     *heights = (UINT32 *)calloc(count, sizeof(UINT32));
     if (*heights == NULL)
     {
-	free(*argbs);
-	free(*xorMasks);
-	free(*andMasks);
-	free(*widths);
-	return 1005;
+        free(*argbs);
+        free(*xorMasks);
+        free(*andMasks);
+        free(*widths);
+        return 1005;
     }
     *imageCount = count;
 
@@ -1139,49 +1139,49 @@ int readMultipleImage(FILE *fp, RGB ***argbs, char ***xorMasks,
     count = 0;
     do
     {
-	rc = readBitmapArrayHeader(fp, &bah);
-	if (rc != 0)
-	    return rc;
-	/*
-	 * Get the image type.  Preserve the position, since we're reading
-	 * into the next structure.
-	 */
-	filePos = ftell(fp);
-	rc = readUINT16little(fp, &imageType);
-	if (rc != 0)
-	    return rc;
-	rc = fseek(fp, filePos, SEEK_SET);
+        rc = readBitmapArrayHeader(fp, &bah);
+        if (rc != 0)
+            return rc;
+        /*
+        * Get the image type.  Preserve the position, since we're reading
+        * into the next structure.
+        */
+        filePos = ftell(fp);
+        rc = readUINT16little(fp, &imageType);
+        if (rc != 0)
+            return rc;
+        rc = fseek(fp, filePos, SEEK_SET);
 
-	/*
-	 * Now that we know what kind of image we're about to read, read it. 
-	 */
-	switch(imageType) {
-	case TYPE_BMP:
-	    rc = readSingleImageBMP(fp, (*argbs)+count, (*widths)+count,
-				    (*heights)+count);
-	    break;
-	case TYPE_ICO:
-	case TYPE_PTR:
-	    rc = readSingleImageICOPTR(fp, (*xorMasks)+count,
-				       (*andMasks)+count, (*widths)+count,
-				       (*heights)+count);
-	    break;
-	case TYPE_ICO_COLOR:
-	case TYPE_PTR_COLOR:
-	    rc = readSingleImageColorICOPTR(fp, (*argbs)+count,
-					    (*xorMasks)+count,
-					    (*andMasks)+count,
-					    (*widths)+count,
-					    (*heights)+count);
-	    break;
-	default:
-	    return 1006;
-	}
-	if (rc != 0)
-	    return rc;
-	
-	fseek(fp, bah.next, SEEK_SET);
-	count++;
+        /*
+        * Now that we know what kind of image we're about to read, read it. 
+        */
+        switch(imageType) {
+        case TYPE_BMP:
+            rc = readSingleImageBMP(fp, (*argbs)+count, (*widths)+count,
+                        (*heights)+count);
+            break;
+        case TYPE_ICO:
+        case TYPE_PTR:
+            rc = readSingleImageICOPTR(fp, (*xorMasks)+count,
+                        (*andMasks)+count, (*widths)+count,
+                        (*heights)+count);
+            break;
+        case TYPE_ICO_COLOR:
+        case TYPE_PTR_COLOR:
+            rc = readSingleImageColorICOPTR(fp, (*argbs)+count,
+                            (*xorMasks)+count,
+                            (*andMasks)+count,
+                            (*widths)+count,
+                            (*heights)+count);
+            break;
+        default:
+            return 1006;
+        }
+        if (rc != 0)
+            return rc;
+        
+        fseek(fp, bah.next, SEEK_SET);
+        count++;
     } while (bah.next != 0);
 
     return 0;
