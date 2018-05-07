@@ -117,11 +117,12 @@ int readBitmapHeader(FILE *fp, BITMAPHEADER *bh)
      */
     if (oldFormat)
     {
-    rc = (int) readINT16little(fp, &tempVal);
-	if (rc != 0)
-	    return rc;
-	bh->width = tempVal;
-	bytesRead += 2;
+        INT16 i16 = (INT16)tempVal;
+        rc = (int) readINT16little(fp, &i16);
+	    if (rc != 0)
+	        return rc;
+        bh->width = (UINT16)i16;
+        bytesRead += 2;
     }
     else
     {
@@ -135,11 +136,12 @@ int readBitmapHeader(FILE *fp, BITMAPHEADER *bh)
     
     if (oldFormat)
     {
-    rc = (int) readINT16little(fp, &tempVal);
-	if (rc != 0)
-	    return rc;
-	bh->height = tempVal;
-	bytesRead += 2;
+        INT16 i16 = (INT16)tempVal;
+        rc = (int) readINT16little(fp, &i16);
+        if (rc != 0)
+            return rc;
+        bh->height = (UINT16)i16;
+        bytesRead += 2;
     }
     else
     {
@@ -356,6 +358,7 @@ int readBitsUncompressed(FILE *fp, RGB *image, int width, int height,
 			 int depth, RGB *colorTable)
 {
     UINT8 temp;
+    INT8 temp2 = (INT8)temp;
     int   rc, padBytes, i;
     long  row, column, pixel, value;
     
@@ -380,9 +383,10 @@ int readBitsUncompressed(FILE *fp, RGB *image, int width, int height,
 	{
 	    for (column = width; column > 0; column -= 8)
 	    {
-		rc = (int) readINT8little(fp, &temp);
+		rc = (int) readINT8little(fp, &temp2);
 		if (rc != 0)
 		    return rc;
+        temp = (INT8)temp2;
 		for (i=0; i < ((column < 8) ? column : 8); i++)
 		{
 		    /*
@@ -571,6 +575,8 @@ int readBitsUncompressed(FILE *fp, RGB *image, int width, int height,
 int readMaskBitsUncompressed(FILE *fp, char *image, int width, int height)
 {
     UINT8 temp;
+    INT8 temp2 = (INT8)temp;
+
     int   rc, padBytes, i;
     long  row, column, pixel;
     char value;
@@ -592,14 +598,15 @@ int readMaskBitsUncompressed(FILE *fp, char *image, int width, int height)
     {
 	for (column = width; column > 0; column -= 8)
 	{
-	    rc = (int) readINT8little(fp, &temp);
+	    rc = (int) readINT8little(fp, &temp2);
 	    if (rc != 0)
-		return rc;
+		    return rc;
+        temp = (UINT8)temp2;
 	    for (i=0; i < ((column < 8) ? column : 8); i++)
 	    {
-		value = ((temp & (1 << (7-i))) == 0) ? 0 : 1;
-		image[pixel] = value;
-		pixel++;
+            value = ((temp & (1 << (7-i))) == 0) ? 0 : 1;
+            image[pixel] = value;
+            pixel++;
 	    }
 	}
 	if (padBytes != 0)
