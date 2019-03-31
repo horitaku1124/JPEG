@@ -11,5 +11,5 @@ pool:
 
 steps:
 - script: |
-    make
+    make CC=gcc 
   displayName: 'make'
