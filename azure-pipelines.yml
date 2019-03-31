@@ -11,6 +11,6 @@ pool:
 
 steps:
 - script: |
-    apt install -y make gcc clang libomp-dev
+    apt install -y libomp-dev
     make CC=gcc
   displayName: 'make'
